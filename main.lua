@@ -1,5 +1,8 @@
 DEBUG = false
 
+local windowWidth, windowHeight = love.window.getDesktopDimensions()
+windowWidth, windowHeight = windowWidth*.85, windowHeight*.85 --make the window a bit smaller than the screen itself
+
 local clickables = {}
 local font = love.graphics.getFont()
 local time = 0.0
@@ -7,10 +10,15 @@ local time = 0.0
 
 function love.load()
 	Object = require "lib.classic"
-	require "elements"
+	require "elements.clickable"
+	require "elements.draggable"
+	require "data"	
+	Data()
+
+	love.window.setMode(windowWidth, windowHeight)
 
 	for i=1,100 do	
-		local c = Clickable(
+		local c = Draggable(
 			love.graphics.newImage("demo/assets/button.png"),
 			love.math.random(0, love.graphics.getWidth()),
 			love.math.random(0, love.graphics.getHeight()),

@@ -1,9 +1,9 @@
 Clickable = Object:extend()
 require "utils"
 
-local scaleHover = 1.5
-local scalePressed = 0.7
-local rotationHover = 15.0/57.29 --degrees to radians
+local scaleHover = 1.2
+local scalePressed = 0.8
+local rotationHover = 10.0/57.29 --degrees to radians
 
 
 function Clickable:new(drawable, x, y, margin)
