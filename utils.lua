@@ -1,7 +1,9 @@
-local rigidness = 0.2
-local damping = 0.2
+function lerp(a,b,t) return (1-t)*a + t*b end
 
-function spring(value, velocity, dest)
+function spring(value, velocity, dest, damping, rigidness)
+	if damping == nil then damping = 0.2 end	
+	if rigidness == nil then rigidness = 0.2 end	
+
 	local distance_to_dest = value - dest
     local loss = damping * velocity
 

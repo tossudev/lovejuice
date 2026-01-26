@@ -3,6 +3,9 @@ require "utils"
 require "data"
 
 local scaleHover = 1.2
+local scaleDrag = 0.9
+local tiltThreshold = 0.5
+local tiltDamp = 30.0 -- mouse relative x pixels per frame / this value
 
 
 function Draggable:new(drawable, x, y, margin)
@@ -10,6 +13,8 @@ function Draggable:new(drawable, x, y, margin)
 	self.drawable = drawable
 	self.x = x
 	self.y = y
+	self.prevMouseX = 0.0
+	self.prevMouseY = 0.0
 	self.w = drawable:getWidth() + margin
 	self.h = drawable:getHeight() + margin
 	self.r = 0.0
@@ -26,19 +31,22 @@ end
 
 
 function Draggable:update(dt)
+	local mouseX = love.mouse.getX()
+	local mouseY = love.mouse.getY()
+	
 	if self.dragging and not love.mouse.isDown(1) then
 		self.dragging = false
 		D.elementSelected = false
 	end
 
 	if self.dragging then
-		self.x = love.mouse.getX()
-		self.y = love.mouse.getY()
+		self.x = mouseX 
+		self.y = mouseY
 	
-		self.sxd = 1.0
-		self.syd = 1.0
+		self.sxd = scaleDrag
+		self.syd = scaleDrag
 		-- todo
-		--self.rd = 
+		self.r = lerp(self.r, getTilt(mouseX, self.prevMouseX), 0.5)
 
 	elseif isMouseOnElement(self.x, self.y, self.w, self.h) then
 		if love.mouse.isDown(1) and not D.elementSelected then
@@ -51,12 +59,14 @@ function Draggable:update(dt)
 	else
 		self.sxd = 1.0
 		self.syd = 1.0
-		self.rd = 0.0
+		self.r = 0.0
 	end
 
-	self.sx, self.vx = spring(self.sx, self.vx, self.sxd)
-	self.sy, self.vy = spring(self.sy, self.vy, self.syd)
-	self.r, self.vr = spring(self.r, self.vr, self.rd)
+	self.sx, self.vx = spring(self.sx, self.vx, self.sxd, 0.2, 0.5)
+	self.sy, self.vy = spring(self.sy, self.vy, self.syd, 0.2, 0.2)
+
+	self.prevMouseX = mouseX	
+	self.prevMouseY = mouseY	
 end
 
 
@@ -83,3 +93,17 @@ function Draggable:draw()
 		)
 	end
 end
+
+
+function getTilt(x, prevX)
+	local relX = x - prevX
+	if math.abs(relX) >= tiltThreshold then
+		return(relX / tiltDamp)
+	end		
+	
+	return(0.0)
+end	
+
+
+
+
