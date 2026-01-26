@@ -37,6 +37,7 @@ function Draggable:update(dt)
 	if self.dragging and not love.mouse.isDown(1) then
 		self.dragging = false
 		D.elementSelected = false
+		self.rd = 0.0
 	end
 
 	if self.dragging then
@@ -45,8 +46,7 @@ function Draggable:update(dt)
 	
 		self.sxd = scaleDrag
 		self.syd = scaleDrag
-		-- todo
-		self.r = lerp(self.r, getTilt(mouseX, self.prevMouseX), 0.5)
+		self.rd = getTilt(mouseX, self.prevMouseX)
 
 	elseif isMouseOnElement(self.x, self.y, self.w, self.h) then
 		if love.mouse.isDown(1) and not D.elementSelected then
@@ -59,11 +59,12 @@ function Draggable:update(dt)
 	else
 		self.sxd = 1.0
 		self.syd = 1.0
-		self.r = 0.0
+		self.rd = 0.0
 	end
 
 	self.sx, self.vx = spring(self.sx, self.vx, self.sxd, 0.2, 0.5)
 	self.sy, self.vy = spring(self.sy, self.vy, self.syd, 0.2, 0.2)
+	self.r = lerp(self.r, self.rd, 0.5)
 
 	self.prevMouseX = mouseX	
 	self.prevMouseY = mouseY	

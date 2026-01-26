@@ -4,6 +4,7 @@ local windowWidth, windowHeight = love.window.getDesktopDimensions()
 windowWidth, windowHeight = windowWidth*.85, windowHeight*.85 --make the window a bit smaller than the screen itself
 
 local clickables = {}
+local bg = love.graphics.newImage("demo/assets/background.png")
 local font = love.graphics.getFont()
 local time = 0.0
 
@@ -38,6 +39,13 @@ end
 
 
 function love.draw()
+	love.graphics.draw(
+		bg,
+		0, 0, 0,
+		windowWidth/bg:getWidth(),
+		windowHeight/bg:getHeight()
+	)
+
 	for _, clickable in pairs(clickables) do
 		clickable:draw()
 	end

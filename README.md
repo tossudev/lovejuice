@@ -1,7 +1,15 @@
 # Lovejuice
-## Juicy UI effects library for Löve2D
+## Juicy UI effects for Löve2D
 
-### Features (TODO)
-- Clickable element
+### Features
+- Clickable elements
 - Draggable elements
+
+(TODO)
+- Ninepatch
+- Toggled clickables
+- Input field
+    - Text
+    - Numeric
+- Slider
 
