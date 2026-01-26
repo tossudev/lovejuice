@@ -6,7 +6,6 @@
 - Draggable elements
 
 (TODO)
-- Ninepatch
 - Toggled clickables
 - Input field
     - Text
