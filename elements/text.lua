@@ -1,7 +1,7 @@
 Text = Object:extend()
 require "utils"
 
-local scaleChange = 1.2
+local scaleChange = 1.5
 local rotationLimit = 15.0 --random rotation value maximum (in degrees)
 
 

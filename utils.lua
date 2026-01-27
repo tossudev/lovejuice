@@ -17,7 +17,12 @@ function spring(value, velocity, dest, damping, rigidness)
 end
 
 
-function isMouseOnElement(x, y, w, h)
+function isMouseOnElement(element)
+	local x = element.x
+	local y = element.y
+	local w = element.w
+	local h = element.h
+
     -- returns scaled pixels
     local mousePosX, mousePosY = love.mouse.getX(), love.mouse.getY()
 

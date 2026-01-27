@@ -6,8 +6,12 @@ windowWidth, windowHeight = windowWidth*.85, windowHeight*.85 --make the window 
 
 local elements = {}
 local t = {}
+local bIncrement = {}
+local bDecrement = {}
 local bg = love.graphics.newImage("demo/assets/background.png")
 local time = 0.0
+local textValue = 100
+local textValueIncrement = 100
 
 
 function love.load()
@@ -16,19 +20,29 @@ function love.load()
 	require "elements.draggable"
 	require "elements.text"
 	require "data"	
+	require "utils"
 	Data()
 
-	love.window.setMode(windowWidth, windowHeight)
+	love.window.setMode(
+		windowWidth,
+		windowHeight,
+		{resizable = true}
+	)
 
-	for i=1,8 do	
-		local c = Draggable(
-			love.graphics.newImage("demo/assets/button.png"),
-			i * 128.0,
-			128.0,
-			0
-		)
-		table.insert(elements, c)
-	end
+	bDecrement = Clickable(
+		love.graphics.newImage("demo/assets/button_arrow_l.png"),
+		128,
+		128,
+		0
+	)
+	bIncrement = Clickable(
+		love.graphics.newImage("demo/assets/button_arrow_r.png"),
+		128 + 80,
+		128,
+		0
+	)
+	table.insert(elements, bDecrement)
+	table.insert(elements, bIncrement)
 
 	t = Text(
 		{{0, 0, 0}, "hello lovely text! :)"},
@@ -62,6 +76,11 @@ function love.draw()
 end
 
 
+function love.resize(w, h)
+	windowWidth, windowHeight = w, h
+end
+
+
 function love.keypressed(key, scancode, isrepeat)
 	if key == "return" then
 		t:updateText({{0, 0, 0}, "hello even lovelier world! :D"})
@@ -69,6 +88,21 @@ function love.keypressed(key, scancode, isrepeat)
 end
 
 
+function love.mousepressed(_x, _y, button)
+	if button ~= 1 then
+		return
+	end
+
+	if isMouseOnElement(bDecrement) then
+		textValue = textValue - textValueIncrement
+		t:updateText({{0, 0, 0}, tostring(textValue)})
+	end
+	if isMouseOnElement(bIncrement) then
+		textValue = textValue + textValueIncrement
+		t:updateText({{0, 0, 0}, tostring(textValue)})
+	end
+	
+end
 
 
 

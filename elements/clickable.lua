@@ -27,7 +27,7 @@ end
 
 
 function Clickable:update(dt)
-	if isMouseOnElement(self.x, self.y, self.w, self.h) then
+	if isMouseOnElement(self) then
 		if love.mouse.isDown(1) then
 			self.sxd = scalePressed
 			self.syd = scalePressed
@@ -43,10 +43,11 @@ function Clickable:update(dt)
 		self.syd = 1.0
 		self.rd = 0.0
 	end
-	
-	self.sx, self.vx = spring(self.sx, self.vx, self.sxd)
-	self.sy, self.vy = spring(self.sy, self.vy, self.syd)
-	self.r, self.vr = spring(self.r, self.vr, self.rd)
+
+	-- keep	rigidness for x&y scales different for that jiggly feel
+	self.sx, self.vx = spring(self.sx, self.vx, self.sxd, 0.2, 0.4)
+	self.sy, self.vy = spring(self.sy, self.vy, self.syd, 0.2, 0.2)
+	self.r, self.vr = spring(self.r, self.vr, self.rd, 0.5)
 end
 
 
