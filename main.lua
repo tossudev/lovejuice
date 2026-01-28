@@ -1,8 +1,13 @@
 DEBUG = false
 Font = love.graphics.newFont("demo/assets/font.ttf", 32)
 
+local push = require "lib.push"
+local gameWidth, gameHeight = 1920, 1080 -- fixed game resolution
 local windowWidth, windowHeight = love.window.getDesktopDimensions()
-windowWidth, windowHeight = windowWidth*.85, windowHeight*.85 --make the window a bit smaller than the screen itself
+windowWidth = windowWidth*0.8
+windowHeight= windowHeight*0.8
+
+push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false, resizable = true})
 
 local elements = {}
 local t = {}
@@ -23,11 +28,7 @@ function love.load()
 	require "utils"
 	Data()
 
-	love.window.setMode(
-		windowWidth,
-		windowHeight,
-		{resizable = true}
-	)
+	love.window.setTitle("lovejuice")
 
 	bDecrement = Clickable(
 		love.graphics.newImage("demo/assets/button_arrow_l.png"),
@@ -61,23 +62,20 @@ end
 
 
 function love.draw()
-	love.graphics.draw(
-		bg,
-		0, 0, 0,
-		windowWidth/bg:getWidth(),
-		windowHeight/bg:getHeight()
-	)
+	push:start()
+	love.graphics.draw(bg)
 
 	for _, element in pairs(elements) do
 		element:draw()
 	end
 	
 	love.graphics.print(tostring(love.timer.getFPS()), 10, 10)
+	push:finish()
 end
 
 
 function love.resize(w, h)
-	windowWidth, windowHeight = w, h
+	return push:resize(w, h)
 end
 
 
