@@ -83,6 +83,9 @@ function love.keypressed(key, scancode, isrepeat)
 	if key == "return" then
 		t:updateText({{0, 0, 0}, "hello even lovelier world! :D"})
 	end
+	if key == "f" then
+		push:switchFullscreen()
+	end
 end
 
 

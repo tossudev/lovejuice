@@ -1,3 +1,5 @@
+local push = require "lib.push"
+
 function lerp(a,b,t) return (1-t)*a + t*b end
 
 function spring(value, velocity, dest, damping, rigidness)
@@ -24,7 +26,10 @@ function isMouseOnElement(element)
 	local h = element.h
 
     -- returns scaled pixels
-    local mousePosX, mousePosY = love.mouse.getX(), love.mouse.getY()
+    local mousePosX, mousePosY = push:toGame(love.mouse.getX(), love.mouse.getY())
+	if mousePosX == nil or mousePosY == nil then
+		mousePosX, mousePosY = -1, -1
+	end
 
     local offset_x = (x - (w/2.0))
     local offset_y = (y - (h/2.0))
