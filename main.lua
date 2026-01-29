@@ -3,9 +3,7 @@ Font = love.graphics.newFont("demo/assets/font.ttf", 32)
 
 local push = require "lib.push"
 local gameWidth, gameHeight = 1920, 1080 -- fixed game resolution
-local windowWidth, windowHeight = love.window.getDesktopDimensions()
-windowWidth = windowWidth*0.8
-windowHeight= windowHeight*0.8
+local windowWidth, windowHeight = 1280, 720 -- start in this resolution, NEEDS TO BE HARD CODED FOR WEB BUILDS
 
 push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false, resizable = true})
 
